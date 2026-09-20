@@ -27,7 +27,7 @@ namespace Contacts_ConsoleApp
 
         static void Main(string[] args)
         {
-            TestUpdateContact();
+            TestDeleteContact();
         }
 
 
@@ -89,6 +89,13 @@ namespace Contacts_ConsoleApp
                 Console.WriteLine($"Updated Successfully, ID = {contact.contactDto.ContactID}");
             else
                 Console.WriteLine("SomeThing Went Wrong!");
+        }
+        static void TestDeleteContact()
+        {
+            if (ContactBL.Delete(14))
+                Console.WriteLine("Deleted!");
+            else
+                Console.WriteLine("Something Went Wrong");
         }
     }
 }

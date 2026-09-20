@@ -49,6 +49,11 @@ namespace Contacts_BLL
             return ContactDA.Update(this.contactDto);
         }
 
+        public static bool Delete(int contactId)
+        {
+            return ContactDA.Delete(contactId);
+        }
+
         public bool Save()
         {
             switch(this._mode)

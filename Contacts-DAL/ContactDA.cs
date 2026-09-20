@@ -160,5 +160,38 @@ namespace Contacts_DAL
 
             return rowsAffected != 0;
         }
+
+        public static bool Delete(int contactId)
+        {
+            int rowsAffected = 0;
+
+            SqlConnection conn = null;
+            SqlCommand cmd = null;
+
+            string query = @"DELETE Contacts
+                             WHERE ContactID = @contactID;";
+
+            try
+            {
+                conn = new SqlConnection(DataAccessSettings.connectionString);
+                cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@contactID", contactId);
+
+                conn.Open();
+
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                // Log The Exception
+            }
+            finally
+            {
+                conn?.Close();
+            }
+
+            return rowsAffected != 0;
+        }
     }
 }
