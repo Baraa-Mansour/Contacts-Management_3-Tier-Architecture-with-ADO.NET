@@ -28,7 +28,12 @@ namespace Contacts_ConsoleApp
 
         static void Main(string[] args)
         {
-            TestIsExist();
+            // TestFindCountryById(5);
+            // TestAddCountry();
+            // TestUpdateCountry();
+            // TestDeleteCountry();
+            // TestGetAllCountries();
+            // TestCountryIsExist();
         }
 
 
@@ -118,6 +123,89 @@ namespace Contacts_ConsoleApp
         static void TestIsExist()
         {
             if (ContactBL.IsExist(9))
+                Console.WriteLine("Found!");
+            else
+                Console.WriteLine("Not Found!");
+        }
+
+
+        static public void PrintCountry(CountryDto dto)
+        {
+            Console.WriteLine();
+            Console.WriteLine("----------");
+            Console.WriteLine($"Id: {dto.CountryID}");
+            Console.WriteLine($"Name: {dto.CountryName}");
+            Console.WriteLine("----------");
+        }
+        static void TestFindCountryById(int Id)
+        {
+            CountryBL country = CountryBL.FindById(Id);
+
+            if (country == null)
+            {
+                Console.WriteLine("NOT Found!");
+            }
+            else
+            {
+                PrintCountry(country.countryDto);
+            }
+        }
+        static void TestAddCountry()
+        {
+            CountryDto dto = new CountryDto();
+            dto.CountryName = "Country name";
+
+            CountryBL country = new CountryBL(dto);
+
+            if (country.Save())
+                Console.WriteLine($"Added Successfully, ID = {country.countryDto.CountryID}");
+            else
+                Console.WriteLine("SomeThing Went Wrong!");
+        }
+        static void TestUpdateCountry()
+        {
+            CountryBL country = CountryBL.FindById(6);
+
+            if (country == null)
+            {
+                Console.WriteLine("Not Found!");
+                return;
+            }
+
+            CountryDto dto = country.countryDto;
+            dto.CountryName = "Updated country name";
+
+            if (country.Save())
+                Console.WriteLine($"Updated Successfully, ID = {country.countryDto.CountryID}");
+            else
+                Console.WriteLine("SomeThing Went Wrong!");
+        }
+        static void TestDeleteCountry()
+        {
+            if (CountryBL.Delete(6))
+                Console.WriteLine("Deleted!");
+            else
+                Console.WriteLine("Something Went Wrong");
+        }
+        static void TestGetAllCountries()
+        {
+            DataTable dt = CountryBL.GetAllCountries();
+
+            if (dt.Rows.Count == 0)
+            {
+                Console.WriteLine("Not Content");
+                return;
+            }
+
+            Console.WriteLine("Countries Info: ");
+            foreach (DataRow row in dt.Rows)
+            {
+                Console.WriteLine($"{row["CountryID"]}: {row["CountryName"]}");
+            }
+        }
+        static void TestCountryIsExist()
+        {
+            if (CountryBL.IsExist(6))
                 Console.WriteLine("Found!");
             else
                 Console.WriteLine("Not Found!");
