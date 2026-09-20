@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContactAddUpdateFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContactAddUpdateFrm.Designer.cs">
+      <DependentUpon>ContactAddUpdateFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ContactsFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,6 +60,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ContactAddUpdateFrm.resx">
+      <DependentUpon>ContactAddUpdateFrm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ContactsFrm.resx">
       <DependentUpon>ContactsFrm.cs</DependentUpon>
     </EmbeddedResource>
@@ -80,9 +89,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="images\icons8-contacts-80.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Contacts-BLL\Contacts-BLL.csproj">
       <Project>{31604403-1ba2-4336-ad57-13d3db5bab16}</Project>
       <Name>Contacts-BLL</Name>
@@ -91,6 +97,11 @@
       <Project>{c8d7515b-7a13-4c74-b83b-d89a361b951e}</Project>
       <Name>Contacts-Contracts</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="images\Contact.ico" />
+    <Content Include="images\profile1.png" />
+    <Content Include="images\profile2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

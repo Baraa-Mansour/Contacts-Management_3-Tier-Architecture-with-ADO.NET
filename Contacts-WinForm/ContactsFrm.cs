@@ -30,6 +30,9 @@ namespace Contacts_WinForm
 
         private void tsmiUpdate_Click(object sender, EventArgs e)
         {
+            ContactAddUpdateFrm frm = new ContactAddUpdateFrm(GetCurrentRowId());
+            frm.ShowDialog();
+            gvContacts.DataSource = ContactBL.GetAllContacts();
         }
 
         private void gvContacts_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -63,5 +66,11 @@ namespace Contacts_WinForm
             }
         }
 
+        private void btnAddContact_Click(object sender, EventArgs e)
+        {
+            ContactAddUpdateFrm frm = new ContactAddUpdateFrm();
+            frm.ShowDialog();
+            gvContacts.DataSource = ContactBL.GetAllContacts();
+        }
     }
 }

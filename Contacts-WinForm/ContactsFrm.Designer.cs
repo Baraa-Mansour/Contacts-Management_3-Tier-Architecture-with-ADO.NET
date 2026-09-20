@@ -42,11 +42,14 @@
             // 
             // gvContacts
             // 
+            this.gvContacts.AllowUserToAddRows = false;
+            this.gvContacts.AllowUserToDeleteRows = false;
             this.gvContacts.AllowUserToOrderColumns = true;
             this.gvContacts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvContacts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvContacts.Location = new System.Drawing.Point(16, 61);
             this.gvContacts.Name = "gvContacts";
+            this.gvContacts.ReadOnly = true;
             this.gvContacts.RowHeadersWidth = 51;
             this.gvContacts.RowTemplate.ContextMenuStrip = this.cmsContactsGvRecord;
             this.gvContacts.RowTemplate.Height = 26;
@@ -89,6 +92,7 @@
             this.btnAddContact.TabIndex = 1;
             this.btnAddContact.Text = "Add";
             this.btnAddContact.UseVisualStyleBackColor = false;
+            this.btnAddContact.Click += new System.EventHandler(this.btnAddContact_Click);
             // 
             // label1
             // 
