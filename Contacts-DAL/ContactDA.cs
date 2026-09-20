@@ -229,5 +229,35 @@ namespace Contacts_DAL
             }
             return dt;
         }
+
+        public static bool IsExist(int contactId)
+        {
+            bool IsFound = false;
+            string query = @"SELECT 1 FROM Contacts
+                             WHERE ContactID = @contactId;";
+
+            SqlConnection conn = new SqlConnection(DataAccessSettings.connectionString);
+            SqlCommand cmd = new SqlCommand(@query, conn);
+
+            cmd.Parameters.AddWithValue("@contactId", contactId);
+
+            try
+            {
+                conn.Open();
+
+                object result = cmd.ExecuteScalar();
+                IsFound = (result != null);
+            }
+            catch
+            {
+                // Log Error
+            }
+            finally
+            {
+                conn?.Close();
+            }
+
+            return IsFound;
+        }
     }
 }

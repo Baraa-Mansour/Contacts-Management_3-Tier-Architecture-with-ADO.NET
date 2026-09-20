@@ -28,7 +28,7 @@ namespace Contacts_ConsoleApp
 
         static void Main(string[] args)
         {
-            TestGetAllContact();
+            TestIsExist();
         }
 
 
@@ -114,6 +114,13 @@ namespace Contacts_ConsoleApp
                 Console.WriteLine($"{row["ContactId"]}: {row["FirstName"]} {row["LastName"]}");
             }
             
+        }
+        static void TestIsExist()
+        {
+            if (ContactBL.IsExist(9))
+                Console.WriteLine("Found!");
+            else
+                Console.WriteLine("Not Found!");
         }
     }
 }

@@ -81,5 +81,10 @@ namespace Contacts_BLL
         {
             return ContactDA.GetAllContacts();
         }
+
+        public static bool IsExist(int contactId)
+        {
+            return ContactDA.IsExist(contactId);
+        }
     }
 }
