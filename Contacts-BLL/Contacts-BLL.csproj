@@ -45,6 +45,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Contacts-Contracts\Contacts-Contracts.csproj">
+      <Project>{c8d7515b-7a13-4c74-b83b-d89a361b951e}</Project>
+      <Name>Contacts-Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Contacts-DAL\Contacts-DAL.csproj">
       <Project>{f6c17309-12d9-4bcd-b084-5f5a3d34f252}</Project>
       <Name>Contacts-DAL</Name>

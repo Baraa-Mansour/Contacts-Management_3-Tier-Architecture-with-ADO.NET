@@ -54,6 +54,10 @@
       <Project>{31604403-1ba2-4336-ad57-13d3db5bab16}</Project>
       <Name>Contacts-BLL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Contacts-Contracts\Contacts-Contracts.csproj">
+      <Project>{c8d7515b-7a13-4c74-b83b-d89a361b951e}</Project>
+      <Name>Contacts-Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
