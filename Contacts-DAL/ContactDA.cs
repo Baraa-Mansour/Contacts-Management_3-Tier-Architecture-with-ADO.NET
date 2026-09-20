@@ -124,7 +124,7 @@ namespace Contacts_DAL
                                  Phone = @phone,
                                  Address = @address,
                                  DateOfBirth = @dateOfBirth,
-                                 CountryId = @countryID, 
+                                 CountryID = @countryID, 
                                  ImagePath = @imagePath
                              WHERE ContactID = @contactID;";
 
