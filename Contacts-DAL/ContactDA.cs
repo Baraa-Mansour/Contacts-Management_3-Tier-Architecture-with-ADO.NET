@@ -108,5 +108,57 @@ namespace Contacts_DAL
 
             return -1;
         }
+
+        public static bool Update(ContactDto contact)
+        {
+            int rowsAffected = 0;
+
+            SqlConnection conn = null;
+            SqlCommand cmd = null;
+
+            string query = @"UPDATE Contacts
+                             SET FirstName = @firstName,
+                                 LastName = @lastName,
+                                 Email = @email,
+                                 Phone = @phone,
+                                 Address = @address,
+                                 DateOfBirth = @dateOfBirth,
+                                 CountryId = @countryID, 
+                                 ImagePath = @imagePath
+                             WHERE ContactID = @contactID;";
+
+            try
+            {
+                conn = new SqlConnection(DataAccessSettings.connectionString);
+                cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@firstName", contact.FirstName);
+                cmd.Parameters.AddWithValue("@lastName", contact.LastName);
+                cmd.Parameters.AddWithValue("@email", contact.Email);
+                cmd.Parameters.AddWithValue("@phone", contact.Phone);
+                cmd.Parameters.AddWithValue("@address", contact.Address);
+                cmd.Parameters.AddWithValue("@dateOfBirth", contact.DateOfBirth);
+                cmd.Parameters.AddWithValue("@countryID", contact.CountryId);
+                cmd.Parameters.AddWithValue(
+                    "@imagePath",
+                    string.IsNullOrWhiteSpace(contact.ImagePath) ? DBNull.Value : (object)contact.ImagePath
+                );
+                cmd.Parameters.AddWithValue("@contactID", contact.ContactID);
+
+                conn.Open();
+
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                // Log The Exception
+            }
+            finally
+            {
+                conn?.Close();
+            }
+
+            return rowsAffected != 0;
+        }
     }
 }

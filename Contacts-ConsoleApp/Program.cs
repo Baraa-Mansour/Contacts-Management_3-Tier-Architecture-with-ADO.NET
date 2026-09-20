@@ -27,7 +27,7 @@ namespace Contacts_ConsoleApp
 
         static void Main(string[] args)
         {
-            TestAddContact();
+            TestUpdateContact();
         }
 
 
@@ -61,6 +61,32 @@ namespace Contacts_ConsoleApp
 
             if (contact.Save())
                 Console.WriteLine($"Added Successfully, ID = {contact.contactDto.ContactID}");
+            else
+                Console.WriteLine("SomeThing Went Wrong!");
+        }
+        static void TestUpdateContact()
+        {
+            ContactBL contact = ContactBL.FindById(14);
+
+            if (contact == null)
+            {
+                Console.WriteLine("Not Found!");
+                return;
+            }
+
+            ContactDto dto = contact.contactDto;
+            dto.FirstName = "Updated name";
+            dto.LastName = "Updated last name";
+            dto.Email = "email";
+            dto.Phone = "1234567890";
+            dto.Address = "address";
+            dto.CountryId = 1;
+            dto.DateOfBirth = DateTime.Now;
+            dto.ImagePath = "Updated image path";
+
+
+            if (contact.Save())
+                Console.WriteLine($"Updated Successfully, ID = {contact.contactDto.ContactID}");
             else
                 Console.WriteLine("SomeThing Went Wrong!");
         }

@@ -10,7 +10,7 @@ namespace Contacts_BLL
 
         public ContactDto contactDto { set; get; }
         private Mode _mode;
-        private int _updateId;
+        private int _updateId; // This use to prevent change Id in Presentation Layer
 
         private ContactBL(ContactDto contactDto, Mode mode, int updateId)
         {
@@ -42,6 +42,13 @@ namespace Contacts_BLL
             return (this.contactDto.ContactID != -1);
         }
 
+        private bool _Update()
+        {
+            this.contactDto.ContactID = this._updateId;
+
+            return ContactDA.Update(this.contactDto);
+        }
+
         public bool Save()
         {
             switch(this._mode)
@@ -57,6 +64,7 @@ namespace Contacts_BLL
                     return false;
 
                 case Mode.UPDATE:
+                    return this._Update();
 
                 default:
                     return false;
