@@ -62,5 +62,51 @@ namespace Contacts_DAL
 
             return contact;
         }
+
+        public static int Add(ContactDto contact)
+        {
+            SqlConnection conn = null;
+            SqlCommand cmd = null;
+
+            string query = @"INSERT INTO Contacts
+                             VALUES (@firstName, @lastName, @email, @phone, @address, @dateOfBirth, @countryID, @imagePath);
+                             SELECT SCOPE_IDENTITY();";
+                             
+            try
+            {
+                conn = new SqlConnection(DataAccessSettings.connectionString);
+                cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@firstName", contact.FirstName);
+                cmd.Parameters.AddWithValue("@lastName", contact.LastName);
+                cmd.Parameters.AddWithValue("@email", contact.Email);
+                cmd.Parameters.AddWithValue("@phone", contact.Phone);
+                cmd.Parameters.AddWithValue("@address", contact.Address);
+                cmd.Parameters.AddWithValue("@dateOfBirth", contact.DateOfBirth);
+                cmd.Parameters.AddWithValue("@countryID", contact.CountryId);
+                cmd.Parameters.AddWithValue(
+                    "@imagePath",
+                    string.IsNullOrWhiteSpace(contact.ImagePath) ? DBNull.Value : (object)contact.ImagePath
+                );
+
+                conn.Open();
+                object result = cmd.ExecuteScalar();
+
+                if(result != DBNull.Value)
+                {
+                    return Convert.ToInt32(result);
+                }
+            }
+            catch
+            {
+                // Log The Exception
+            }
+            finally
+            {
+                conn?.Close();
+            }
+
+            return -1;
+        }
     }
 }
