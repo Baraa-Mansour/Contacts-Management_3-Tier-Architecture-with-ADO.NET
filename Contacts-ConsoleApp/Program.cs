@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using Contacts_BLL;
 using Contacts_Contracts.DTOs;
 
@@ -27,7 +28,7 @@ namespace Contacts_ConsoleApp
 
         static void Main(string[] args)
         {
-            TestDeleteContact();
+            TestGetAllContact();
         }
 
 
@@ -96,6 +97,23 @@ namespace Contacts_ConsoleApp
                 Console.WriteLine("Deleted!");
             else
                 Console.WriteLine("Something Went Wrong");
+        }
+        static void TestGetAllContact()
+        {
+            DataTable dt = ContactBL.GetAllContacts();
+
+            if (dt.Rows.Count == 0)
+            {
+                Console.WriteLine("Not Content");
+                return;
+            }
+
+            Console.WriteLine("Contacts Info: ");
+            foreach (DataRow row in dt.Rows)
+            {
+                Console.WriteLine($"{row["ContactId"]}: {row["FirstName"]} {row["LastName"]}");
+            }
+            
         }
     }
 }

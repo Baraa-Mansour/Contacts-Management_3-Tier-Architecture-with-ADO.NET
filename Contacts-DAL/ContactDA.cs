@@ -1,5 +1,6 @@
 ﻿using Contacts_Contracts.DTOs;
 using System;
+using System.Data;
 using System.Data.SqlClient;
 
 
@@ -192,6 +193,41 @@ namespace Contacts_DAL
             }
 
             return rowsAffected != 0;
+        }
+
+        public static DataTable GetAllContacts()
+        {
+            DataTable dt = new DataTable();
+
+            SqlConnection conn = null;
+            SqlCommand cmd = null;
+            SqlDataReader reader = null;
+
+            string query = @"SELECT * FROM Contacts";
+            try
+            {
+                conn = new SqlConnection(DataAccessSettings.connectionString);
+                cmd = new SqlCommand(query, conn);
+
+
+                conn.Open();
+                reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    dt.Load(reader);
+                }
+            }
+            catch
+            {
+                // Log The Exception
+            }
+            finally
+            {
+                reader?.Close();
+                conn?.Close();
+            }
+            return dt;
         }
     }
 }

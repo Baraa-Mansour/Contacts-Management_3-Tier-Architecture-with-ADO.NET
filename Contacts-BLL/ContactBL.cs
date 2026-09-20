@@ -1,5 +1,6 @@
 ﻿using Contacts_Contracts.DTOs;
 using Contacts_DAL;
+using System.Data;
 
 
 namespace Contacts_BLL
@@ -74,6 +75,11 @@ namespace Contacts_BLL
                 default:
                     return false;
             }
+        }
+
+        public static DataTable GetAllContacts()
+        {
+            return ContactDA.GetAllContacts();
         }
     }
 }
