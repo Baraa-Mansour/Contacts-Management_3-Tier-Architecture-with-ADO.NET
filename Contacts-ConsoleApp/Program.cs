@@ -34,6 +34,8 @@ namespace Contacts_ConsoleApp
             // TestDeleteCountry();
             // TestGetAllCountries();
             // TestCountryIsExist();
+            // TestFindCountryByName("Germany");
+            // TestCountryIsExistByName("Germany");
         }
 
 
@@ -206,6 +208,26 @@ namespace Contacts_ConsoleApp
         static void TestCountryIsExist()
         {
             if (CountryBL.IsExist(6))
+                Console.WriteLine("Found!");
+            else
+                Console.WriteLine("Not Found!");
+        }
+        static void TestFindCountryByName(string name)
+        {
+            CountryBL country = CountryBL.FindByName(name);
+
+            if (country == null)
+            {
+                Console.WriteLine("NOT Found!");
+            }
+            else
+            {
+                PrintCountry(country.countryDto);
+            }
+        }
+        static void TestCountryIsExistByName(string name)
+        {
+            if (CountryBL.IsExistByName(name))
                 Console.WriteLine("Found!");
             else
                 Console.WriteLine("Not Found!");

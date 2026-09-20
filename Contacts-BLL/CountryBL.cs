@@ -86,5 +86,20 @@ namespace Contacts_BLL
         {
             return CountryDA.IsExist(countryId);
         }
+
+        public static CountryBL FindByName(string countryName)
+        {
+            CountryDto countryDto = CountryDA.FindByName(countryName);
+
+            if (countryDto != null)
+                return new CountryBL(countryDto, Mode.UPDATE, countryDto.CountryID);
+
+            return null;
+        }
+
+        public static bool IsExistByName(string countryName)
+        {
+            return CountryDA.IsExistByName(countryName);
+        }
     }
 }

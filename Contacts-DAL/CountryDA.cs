@@ -222,5 +222,72 @@ namespace Contacts_DAL
 
             return IsFound;
         }
+
+        public static CountryDto FindByName(string countryName)
+        {
+            CountryDto country = null;
+
+            SqlConnection conn = null;
+            SqlCommand cmd = null;
+            SqlDataReader reader = null;
+
+            string query = @"SELECT * FROM Countries WHERE CountryName = @countryName";
+            try
+            {
+                conn = new SqlConnection(DataAccessSettings.connectionString);
+                cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@countryName", countryName);
+
+                conn.Open();
+                reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    country = _convertReader(reader);
+                }
+            }
+            catch
+            {
+                // Log The Exception
+            }
+            finally
+            {
+                reader?.Close();
+                conn?.Close();
+            }
+
+            return country;
+        }
+
+        public static bool IsExistByName(string countryName)
+        {
+            bool IsFound = false;
+            string query = @"SELECT 1 FROM Countries
+                     WHERE CountryName = @countryName;";
+
+            SqlConnection conn = new SqlConnection(DataAccessSettings.connectionString);
+            SqlCommand cmd = new SqlCommand(@query, conn);
+
+            cmd.Parameters.AddWithValue("@countryName", countryName);
+
+            try
+            {
+                conn.Open();
+
+                object result = cmd.ExecuteScalar();
+                IsFound = (result != null);
+            }
+            catch
+            {
+                // Log Error
+            }
+            finally
+            {
+                conn?.Close();
+            }
+
+            return IsFound;
+        }
     }
 }
