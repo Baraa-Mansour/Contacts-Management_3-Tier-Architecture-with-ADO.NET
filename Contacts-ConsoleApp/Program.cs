@@ -28,11 +28,11 @@ namespace Contacts_ConsoleApp
 
         static void Main(string[] args)
         {
-            // TestFindCountryById(5);
+            // TestFindCountryById(7);
             // TestAddCountry();
             // TestUpdateCountry();
             // TestDeleteCountry();
-            // TestGetAllCountries();
+            TestGetAllCountries();
             // TestCountryIsExist();
             // TestFindCountryByName("Germany");
             // TestCountryIsExistByName("Germany");
@@ -137,6 +137,8 @@ namespace Contacts_ConsoleApp
             Console.WriteLine("----------");
             Console.WriteLine($"Id: {dto.CountryID}");
             Console.WriteLine($"Name: {dto.CountryName}");
+            Console.WriteLine($"Code: {dto.Code ?? "Not Found!"}");
+            Console.WriteLine($"Phone Code: {dto.PhoneCode ?? "Not Found!"}");
             Console.WriteLine("----------");
         }
         static void TestFindCountryById(int Id)
@@ -156,6 +158,8 @@ namespace Contacts_ConsoleApp
         {
             CountryDto dto = new CountryDto();
             dto.CountryName = "Country name";
+            dto.Code = "ABC";
+            dto.PhoneCode = "123";
 
             CountryBL country = new CountryBL(dto);
 
@@ -166,7 +170,7 @@ namespace Contacts_ConsoleApp
         }
         static void TestUpdateCountry()
         {
-            CountryBL country = CountryBL.FindById(6);
+            CountryBL country = CountryBL.FindById(7);
 
             if (country == null)
             {
@@ -176,6 +180,8 @@ namespace Contacts_ConsoleApp
 
             CountryDto dto = country.countryDto;
             dto.CountryName = "Updated country name";
+            dto.Code = "XYZ";
+            dto.PhoneCode = "456";
 
             if (country.Save())
                 Console.WriteLine($"Updated Successfully, ID = {country.countryDto.CountryID}");
@@ -202,7 +208,12 @@ namespace Contacts_ConsoleApp
             Console.WriteLine("Countries Info: ");
             foreach (DataRow row in dt.Rows)
             {
-                Console.WriteLine($"{row["CountryID"]}: {row["CountryName"]}");
+                string rawCode = row["Code"].ToString();
+                string rawPhoneCode = row["PhoneCode"].ToString();
+
+                string strCode = string.IsNullOrWhiteSpace(rawCode) ? "NotFound" : rawCode;
+                string strPhoneCode = string.IsNullOrWhiteSpace(rawPhoneCode) ? "NotFound" : rawPhoneCode;
+                Console.WriteLine($"{row["CountryID"]}: {row["CountryName"]} ({strCode}, {strPhoneCode})");
             }
         }
         static void TestCountryIsExist()

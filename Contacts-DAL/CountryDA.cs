@@ -14,6 +14,12 @@ namespace Contacts_DAL
             dto.CountryID = (int)reader["CountryID"];
             dto.CountryName = (string)reader["CountryName"];
 
+            object code = reader["Code"];
+            dto.Code = code == DBNull.Value ? null : (string)code;
+
+            object phoneCode = reader["PhoneCode"];
+            dto.PhoneCode = phoneCode == DBNull.Value ? null : (string)phoneCode;
+
             return dto;
         }
 
@@ -54,13 +60,50 @@ namespace Contacts_DAL
             return country;
         }
 
+        public static CountryDto FindByName(string countryName)
+        {
+            CountryDto country = null;
+
+            SqlConnection conn = null;
+            SqlCommand cmd = null;
+            SqlDataReader reader = null;
+
+            string query = @"SELECT * FROM Countries WHERE CountryName = @countryName";
+            try
+            {
+                conn = new SqlConnection(DataAccessSettings.connectionString);
+                cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@countryName", countryName);
+
+                conn.Open();
+                reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    country = _convertReader(reader);
+                }
+            }
+            catch
+            {
+                // Log The Exception
+            }
+            finally
+            {
+                reader?.Close();
+                conn?.Close();
+            }
+
+            return country;
+        }
+
         public static int Add(CountryDto country)
         {
             SqlConnection conn = null;
             SqlCommand cmd = null;
 
             string query = @"INSERT INTO Countries
-                             VALUES (@countryName);
+                             VALUES (@countryName, @code, @phoneCode);
                              SELECT SCOPE_IDENTITY();";
 
             try
@@ -69,6 +112,14 @@ namespace Contacts_DAL
                 cmd = new SqlCommand(query, conn);
 
                 cmd.Parameters.AddWithValue("@countryName", country.CountryName);
+                cmd.Parameters.AddWithValue(
+                    "@code",
+                    string.IsNullOrWhiteSpace(country.Code) ? DBNull.Value : (object)country.Code
+                );
+                cmd.Parameters.AddWithValue(
+                    "@phoneCode",
+                    string.IsNullOrWhiteSpace(country.PhoneCode) ? DBNull.Value : (object)country.PhoneCode
+                );
 
                 conn.Open();
                 object result = cmd.ExecuteScalar();
@@ -98,7 +149,9 @@ namespace Contacts_DAL
             SqlCommand cmd = null;
 
             string query = @"UPDATE Countries
-                             SET CountryName = @countryName
+                             SET CountryName = @countryName,
+                                 Code        = @code,
+                                 PhoneCode   = @phoneCode
                              WHERE CountryID = @countryID;";
 
             try
@@ -107,6 +160,14 @@ namespace Contacts_DAL
                 cmd = new SqlCommand(query, conn);
 
                 cmd.Parameters.AddWithValue("@countryName", country.CountryName);
+                cmd.Parameters.AddWithValue(
+                    "@code",
+                    string.IsNullOrWhiteSpace(country.Code) ? DBNull.Value : (object)country.Code
+                );
+                cmd.Parameters.AddWithValue(
+                    "@phoneCode",
+                    string.IsNullOrWhiteSpace(country.PhoneCode) ? DBNull.Value : (object)country.PhoneCode
+                );
                 cmd.Parameters.AddWithValue("@countryID", country.CountryID);
 
                 conn.Open();
@@ -223,48 +284,11 @@ namespace Contacts_DAL
             return IsFound;
         }
 
-        public static CountryDto FindByName(string countryName)
-        {
-            CountryDto country = null;
-
-            SqlConnection conn = null;
-            SqlCommand cmd = null;
-            SqlDataReader reader = null;
-
-            string query = @"SELECT * FROM Countries WHERE CountryName = @countryName";
-            try
-            {
-                conn = new SqlConnection(DataAccessSettings.connectionString);
-                cmd = new SqlCommand(query, conn);
-
-                cmd.Parameters.AddWithValue("@countryName", countryName);
-
-                conn.Open();
-                reader = cmd.ExecuteReader();
-
-                if (reader.Read())
-                {
-                    country = _convertReader(reader);
-                }
-            }
-            catch
-            {
-                // Log The Exception
-            }
-            finally
-            {
-                reader?.Close();
-                conn?.Close();
-            }
-
-            return country;
-        }
-
         public static bool IsExistByName(string countryName)
         {
             bool IsFound = false;
             string query = @"SELECT 1 FROM Countries
-                     WHERE CountryName = @countryName;";
+                             WHERE CountryName = @countryName;";
 
             SqlConnection conn = new SqlConnection(DataAccessSettings.connectionString);
             SqlCommand cmd = new SqlCommand(@query, conn);
